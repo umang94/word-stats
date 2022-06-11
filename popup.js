@@ -22,3 +22,13 @@ function setPageBackgroundColor() {
     document.body.style.backgroundColor = color;
   });
 }
+
+function logSelection(event) {
+  // const log = document.getElementById('log');
+  const selection = event.target.value.substring(event.target.selectionStart, event.target.selectionEnd);
+  // log.textContent = `You selected: ${selection}`;
+  console.log(selection)
+}
+
+const input = document.querySelector('input');
+input.addEventListener('select', logSelection);

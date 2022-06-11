@@ -6,6 +6,16 @@
   "background": {
   	"service_worker":"scripts/background.js"
   },
+  "commands": {
+  	 "_execute_action": {
+  	"get-selected-text": {
+  		"suggested_key": {
+  			"default": "Ctrl+Shift+Y"
+  		},
+  		"description": "Get selected text description"
+  	}
+  }
+  },
   "permissions": ["storage", "activeTab", "scripting"],
   "action": {
     "default_popup": "popup.html",
