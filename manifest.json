@@ -15,5 +15,5 @@
   		"description": "Get selected text description"
   	}
   },
-  "permissions": ["storage", "activeTab", "scripting"]
+  "permissions": ["storage", "activeTab", "scripting", "tabs"]
 }
