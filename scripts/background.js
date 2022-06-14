@@ -26,12 +26,25 @@ function getTitle() {
   return document.title;
 }
 
-chrome.commands.onCommand.addListener(function (command) {
+chrome.action.onClicked.addListener((tab) => {
+  console.log("obtained tabID: " + tab.id );
+  chrome.scripting.executeScript({
+    target: {tabId: tab.id},
+    func: contentScriptFunc,
+    args: ['action'],
+  });
+});
 
-    console.log("Running command " + command);
+function contentScriptFunc(name) {
+  alert(`"${name}" executed`);
+}
+
+chrome.commands.onCommand.addListener(function (command, tab) {
+
+    console.log("Running command " + command + " on tab " + tab.id);
     chrome.scripting.executeScript(
     {
-      target: {tabId: getTabId(), allFrames: true},
+      target: {tabId: 385, allFrames: true},
       func: getTitle,
     },
     (injectionResults) => {
@@ -105,16 +118,3 @@ function getSelectionText() {
     return text;
 }
 
-function getTabId() {
-    let queryOptions = { active: true, lastFocusedWindow: true };
-      let [tab] = await chrome.tabs.query(queryOptions);
-      console.log("tab is " + tab);
-  return tab;
-
-  // chrome.tabs.query({currentWindow: true, active: true}, function(tabs) { 
-  //   console.log("fetching failure " + tabs);
-  //    // + tabs[0].id );
-  //   return tabs[0].id;}
-    // );
-  // chrome.tabs.getCurrent(callback: function (tab) { return tab.id; });
-}
