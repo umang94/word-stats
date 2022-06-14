@@ -44,7 +44,7 @@ chrome.commands.onCommand.addListener(function (command, tab) {
     console.log("Running command " + command + " on tab " + tab.id);
     chrome.scripting.executeScript(
     {
-      target: {tabId: 385, allFrames: true},
+      target: {tabId: tab.id, allFrames: true},
       func: getTitle,
     },
     (injectionResults) => {
