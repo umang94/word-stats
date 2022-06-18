@@ -1,2 +1,2 @@
 # word-stats
-A browser plugin for analysis word statistics of textual content.
+A browser plugin that displays text statistics for user selected content.
