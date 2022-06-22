@@ -29,6 +29,9 @@ function getTitle() {
 
 chrome.action.onClicked.addListener((tab) => {
   console.log("user clicked the icon and obtained tabID: " + tab.id );
+  chrome.storage.sync.get('clipText', function(result) {
+    console.log('Value on clicking currently is ' + result.clipText);
+  });
   console.log(this.selectedText);
   chrome.scripting.executeScript({
     target: {tabId: tab.id},
@@ -39,6 +42,9 @@ chrome.action.onClicked.addListener((tab) => {
 
 function contentScriptFunc(name) {
   console.log("Printing : " + this.selectedText);
+  chrome.storage.sync.get('clipText', function(result) {
+    console.log('Value in content script currently is ' + result.clipText);
+  });
   // alert(`"${selectedText}" selected`);
 }
 
