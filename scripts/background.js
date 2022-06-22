@@ -1,4 +1,5 @@
 let color = '#3aa757';
+let selectedText;
 
 chrome.runtime.onInstalled.addListener(() => {
   chrome.storage.sync.set({ color });
@@ -27,7 +28,8 @@ function getTitle() {
 }
 
 chrome.action.onClicked.addListener((tab) => {
-  console.log("obtained tabID: " + tab.id );
+  console.log("user clicked the icon and obtained tabID: " + tab.id );
+  console.log(this.selectedText);
   chrome.scripting.executeScript({
     target: {tabId: tab.id},
     func: contentScriptFunc,
@@ -36,7 +38,8 @@ chrome.action.onClicked.addListener((tab) => {
 });
 
 function contentScriptFunc(name) {
-  alert(`"${name}" executed`);
+  console.log("Printing : " + this.selectedText);
+  // alert(`"${selectedText}" selected`);
 }
 
 chrome.commands.onCommand.addListener(function (command, tab) {
@@ -49,8 +52,16 @@ chrome.commands.onCommand.addListener(function (command, tab) {
     },
     (injectionResults) => {
         console.log("Obtained injection Results " + injectionResults );
-      for (const frameResult of injectionResults)
+        // selectedText = injectionResults;
+      for (const frameResult of injectionResults){
         console.log('Frame Title: ' + frameResult.result);
+        chrome.storage.sync.set({'clipText': frameResult.result}, function() {
+          console.log('Value is set');
+        });
+        chrome.storage.sync.get('clipText', function(result) {
+          console.log('Value currently is ' + result.clipText);
+        });
+    }
     });
 
  // console.log("Workds");
@@ -115,6 +126,8 @@ function getSelectionText() {
     } else if (window.getSelection) {
         text = window.getSelection().toString();
     }
+    this.selectedText = text;
+    // console.log
     return text;
 }
 
