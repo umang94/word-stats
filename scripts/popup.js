@@ -5,7 +5,9 @@ let selectedText;
 chrome.storage.sync.get("clipText", function(result) {
   console.log('Value currently in popup js is ' + result.clipText);
   p.innerHTML = result.clipText;
-  document.getElementById("clippedContentStats").innerHTML = wordCount(result.clipText);
+  document.getElementById("clippedContentWords").innerHTML = wordCount(result.clipText);
+  document.getElementById("clippedContentLines").innerHTML = sentenceCount(result.clipText);
+
 });
 // chrome.storage.sync.get("color", ({ color }) => {
 //   console.log("Changing color : " + color)
@@ -36,4 +38,9 @@ chrome.storage.sync.get("clipText", function(result) {
 
 function wordCount(str) { 
   return str.split(" ").length;
+}
+
+function sentenceCount(str) {
+  // https://stackoverflow.com/questions/35215348/count-sentences-in-string-with-javascript
+  return str.match(/[\w|\)][.?!](\s|$)/g).length;
 }
