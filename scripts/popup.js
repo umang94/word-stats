@@ -5,9 +5,11 @@ let selectedText;
 chrome.storage.sync.get("clipText", function(result) {
   console.log('Value currently in popup js is ' + result.clipText);
   p.innerHTML = result.clipText;
-  document.getElementById("clippedContentWords").innerHTML = wordCount(result.clipText);
-  document.getElementById("clippedContentLines").innerHTML = sentenceCount(result.clipText);
-
+  var noOfWords = wordCount(result.clipText);
+  var noOfSentences = sentenceCount(result.clipText);
+  document.getElementById("clippedContentWords").innerHTML = noOfWords;
+  document.getElementById("clippedContentLines").innerHTML = noOfSentences;
+  document.getElementById("clippedContentAvgWords").innerHTML = String( Number(noOfWords) / Number(noOfSentences));
 });
 // chrome.storage.sync.get("color", ({ color }) => {
 //   console.log("Changing color : " + color)
@@ -43,4 +45,10 @@ function wordCount(str) {
 function sentenceCount(str) {
   // https://stackoverflow.com/questions/35215348/count-sentences-in-string-with-javascript
   return str.match(/[\w|\)][.?!](\s|$)/g).length;
+}
+
+function getNoOfSentences(val) {
+  // https://stackoverflow.com/a/47786733
+  var sentences = val.split(/[\.!?]+/); // split on punctuation
+  return sentences.length - 1; // subtract 1 to account for last sentence
 }
